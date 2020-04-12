@@ -3,11 +3,11 @@
   "description": "A Factor CMS project",
   "author": "Andrew Powers <andrew@fiction.com>",
   "private": true,
+  "main": "src/index",
   "scripts": {
     "dev": "npx factor dev",
     "start": "npx factor start",
-    "build": "npx factor build",
-    "postinstall": "npm run build"
+    "build": "npx factor build"
   },
   "dependencies": {
     "@factor/core": "^1.0.0",
@@ -31,5 +31,16 @@
     "eslint-plugin-vue": "^6.0.0",
     "prettier": "^1.17.1",
     "prettier-eslint": "^9.0.0"
+  },
+  "factor": {
+    "app": {
+      "name": "Factor Hacker News",
+      "description": "Hacker News clone built with Factor JS"
+    },
+    "admins": [],
+    "load": [
+      "app",
+      "server"
+    ]
   }
 }

@@ -4,10 +4,7 @@ module.exports = {
     __dirname: false,
     require: false,
     module: false,
-    process: false,
-    to: false,
-    describe: false,
-    context: false
+    process: false
   },
   parser: "vue-eslint-parser",
   parserOptions: {
@@ -30,15 +27,7 @@ module.exports = {
     "plugin:@typescript-eslint/recommended"
   ],
 
-  plugins: [
-    "vue",
-    "json",
-    "prettier",
-    "unicorn",
-    "import",
-    "import",
-    "@typescript-eslint"
-  ],
+  plugins: ["vue", "json", "prettier", "unicorn", "import", "@typescript-eslint"],
 
   rules: {
     "no-console": "error",
@@ -90,13 +79,5 @@ module.exports = {
         "@typescript-eslint/ban-ts-ignore": "warn"
       }
     }
-  ],
-
-  settings: {
-    "import/resolver": {
-      alias: {
-        map: [["~", process.env.FACTOR_CWD || process.cwd()]]
-      }
-    }
-  }
+  ]
 }
