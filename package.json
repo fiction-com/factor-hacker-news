@@ -1,0 +1,41 @@
+{
+  "name": "factor-hacker-news",
+  "description": "A Factor CMS project",
+  "author": "Andrew Powers <andrew@fiction.com>",
+  "private": true,
+  "scripts": {
+    "dev": "npx factor dev",
+    "start": "npx factor start",
+    "build": "npx factor build",
+    "postinstall": "npm run build"
+  },
+  "dependencies": {
+    "@factor/core": "^1.0.0",
+    "firebase": "4.6.2",
+    "lru-cache": "^4.1.1",
+    "route-cache": "0.4.3"
+  },
+  "devDependencies": {
+    "autoprefixer": "^7.1.6",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-syntax-dynamic-import": "^6.18.0",
+    "babel-preset-env": "^1.6.1",
+    "chokidar": "^1.7.0",
+    "css-loader": "^0.28.7",
+    "file-loader": "^1.1.5",
+    "friendly-errors-webpack-plugin": "^1.6.1",
+    "rimraf": "^2.6.2",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.1",
+    "sw-precache-webpack-plugin": "^0.11.4",
+    "url-loader": "^0.6.2",
+    "vue-loader": "^15.3.0",
+    "vue-template-compiler": "^2.5.22",
+    "webpack": "^3.8.1",
+    "webpack-dev-middleware": "^1.12.0",
+    "webpack-hot-middleware": "^2.20.0",
+    "webpack-merge": "^4.2.1",
+    "webpack-node-externals": "^1.7.2"
+  }
+}
