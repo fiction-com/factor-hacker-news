@@ -10,7 +10,7 @@
           {{ item.score }} points
           | by
           <router-link :to="'/user/' + item.by">{{ item.by }}</router-link>
-          {{ item.time | timeAgo }} ago
+          {{ timeAgo(item.time) }} ago
         </p>
       </div>
       <div class="item-view-comments">
@@ -27,6 +27,7 @@
 </template>
 
 <script lang="ts">
+import { timeAgo } from "@factor/api"
 import Spinner from "../components/Spinner.vue"
 import Comment from "../components/Comment.vue"
 import Vue from "vue"
@@ -71,6 +72,7 @@ export default Vue.extend({
   },
 
   methods: {
+    timeAgo,
     fetchComments() {
       if (!this.item || !this.item.kids) {
         return

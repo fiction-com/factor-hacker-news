@@ -26,6 +26,7 @@
 
 <script lang="ts">
 import Vue from "vue"
+import { timeAgo } from "@factor/api"
 export default Vue.extend({
   name: "user-view",
 
@@ -43,6 +44,9 @@ export default Vue.extend({
     return {
       title: this.user ? this.user.id : "User not found"
     }
+  },
+  methods: {
+    timeAgo
   }
 })
 </script>

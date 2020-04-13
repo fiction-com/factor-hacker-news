@@ -16,7 +16,7 @@
         by
         <router-link :to="'/user/' + item.by">{{ item.by }}</router-link>
       </span>
-      <span class="time">{{ item.time | timeAgo }} ago</span>
+      <span class="time">{{ timeAgo(item.time) }} ago</span>
       <span v-if="item.type !== 'job'" class="comments-link">
         |
         <router-link :to="'/item/' + item.id">{{ item.descendants }} comments</router-link>

@@ -2,7 +2,7 @@
   <li v-if="comment" class="comment">
     <div class="by">
       <router-link :to="'/user/' + comment.by">{{ comment.by }}</router-link>
-      {{ comment.time | timeAgo }} ago
+      {{ timeAgo(comment.time) }} ago
     </div>
     <div class="text" v-html="comment.text"></div>
     <div class="toggle" :class="{ open }" v-if="comment.kids && comment.kids.length">
@@ -20,8 +20,10 @@
   </li>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from "vue"
+import { timeAgo } from "@factor/api"
+export default Vue.extend({
   name: "comment",
   props: ["id"],
   data() {
@@ -35,9 +37,10 @@ export default {
     }
   },
   methods: {
-    pluralize: n => n + (n === 1 ? " reply" : " replies")
+    timeAgo,
+    pluralize: (n: number) => n + (n === 1 ? " reply" : " replies")
   }
-}
+})
 </script>
 
 <style lang="less">

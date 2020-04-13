@@ -10,7 +10,7 @@ addContentRoutes({
     { path: "/v/:view/:page", component: listView },
     { path: "/item/:id", component: itemView },
     { path: "/user/:id", component: userView },
-    { path: "/", redirect: "/i/top" }
+    { path: "/", redirect: "/v/top" }
   ]
 })
 
