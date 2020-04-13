@@ -5,11 +5,11 @@
         <router-link to="/" exact>
           <img class="logo" src="~static/logo-48.png" alt="logo" />
         </router-link>
-        <router-link to="/top">Top</router-link>
-        <router-link to="/new">New</router-link>
-        <router-link to="/show">Show</router-link>
-        <router-link to="/ask">Ask</router-link>
-        <router-link to="/job">Jobs</router-link>
+        <router-link to="/v/top">Top</router-link>
+        <router-link to="/v/new">New</router-link>
+        <router-link to="/v/show">Show</router-link>
+        <router-link to="/v/ask">Ask</router-link>
+        <router-link to="/v/job">Jobs</router-link>
         <a
           class="github"
           href="https://github.com/fiction-com/factor-hacker-news"
