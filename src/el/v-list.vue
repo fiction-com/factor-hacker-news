@@ -33,7 +33,7 @@ export default Vue.extend({
   },
 
   props: {
-    type: {type: String, default: ''  }
+    type: { type: String, default: "" }
   },
 
   data() {
@@ -45,6 +45,9 @@ export default Vue.extend({
   },
 
   computed: {
+    view() {
+      return this.$route.params.view ?? "top"
+    },
     itemsPerPage() {
       return stored("itemsPerPage")
     },
@@ -52,7 +55,7 @@ export default Vue.extend({
       return Number(this.$route.params.page) || 1
     },
     maxPage(this: any) {
-      const list = stored(this.type) ?? []
+      const list = stored(this.view) ?? []
       return Math.ceil(list.length / this.itemsPerPage)
     },
     hasMore(this: any) {
@@ -71,8 +74,8 @@ export default Vue.extend({
       this.loadItems(this.page)
     }
     // watch the current list for realtime updates
-    this.unwatchList = watchList(this.type, (ids: string[]) => {
-      setList({ type: this.type, ids })
+    this.unwatchList = watchList(this.view, (ids: string[]) => {
+      setList({ type: this.view, ids })
       ensureActiveItems().then(() => {
         this.displayedItems = getActiveItems()
       })
@@ -85,19 +88,17 @@ export default Vue.extend({
 
   methods: {
     loadItems(this: any, to = this.page, from = -1) {
-      this.$bar.start()
       requestListData({
-        type: this.type
+        type: this.view
       }).then(() => {
         if (this.page < 0 || this.page > this.maxPage) {
-          this.$router.replace(`/${this.type}/1`)
+          this.$router.replace(`/${this.view}/1`)
           return
         }
-        const transitionName =  to > from ? "slide-left" : "slide-right"
+        const transitionName = to > from ? "slide-left" : "slide-right"
         this.transition = from === -1 ? null : transitionName
         this.displayedPage = to
         this.displayedItems = getActiveItems()
-        this.$bar.finish()
       })
     }
   }

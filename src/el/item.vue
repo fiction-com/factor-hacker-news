@@ -4,13 +4,13 @@
     <span class="title">
       <template v-if="item.url">
         <a :href="item.url" target="_blank" rel="noopener">{{ item.title }}</a>
-        <span class="host">({{ item.url | host }})</span>
+        <span class="host">({{ niceHost(item.url) }})</span>
       </template>
       <template v-else>
         <router-link :to="'/item/' + item.id">{{ item.title }}</router-link>
       </template>
     </span>
-    <br >
+    <br />
     <span class="meta">
       <span v-if="item.type !== 'job'" class="by">
         by
@@ -28,16 +28,17 @@
 
 <script>
 import { timeAgo } from "@factor/api"
-
+import { niceHost } from "../api/util"
 export default {
   name: "NewsItem",
   props: {
-    item: {type: Object, default: () => {}}
+    item: { type: Object, default: () => {} }
   },
   // http://ssr.vuejs.org/en/caching.html#component-level-caching
   serverCacheKey: ({ item: { id, __lastUpdated, time } }) => {
     return `${id}::${__lastUpdated}::${timeAgo(time)}`
-  }
+  },
+  methods: { timeAgo, niceHost }
 }
 </script>
 

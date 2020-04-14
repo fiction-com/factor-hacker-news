@@ -16,6 +16,5 @@
     "paths": {
       "create-api": ["src/api/create-api-server"]
     }
-  },
-  "exclude": ["node_modules", "**/dist"]
+  }
 }
