@@ -26,19 +26,25 @@
 
 <script lang="ts">
 import Vue from "vue"
-import { timeAgo } from "@factor/api"
-import {requestUser} from "../api/data"
+import { timeAgo, stored } from "@factor/api"
+import { requestUser } from "../api/data"
 export default Vue.extend({
   name: "UserView",
 
   computed: {
     user(this: any) {
-      return this.$store.state.users[this.$route.params.id]
+      return stored(this.$route.params.id)
     }
   },
 
   serverPrefetch() {
     return requestUser({ id: this.$route.params.id })
+  },
+
+  async beforeMount(this: any) {
+    if (this.$root._isMounted) {
+      await requestUser({ id: this.$route.params.id })
+    }
   },
 
   metaInfo() {

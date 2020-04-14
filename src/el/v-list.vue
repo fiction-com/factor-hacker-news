@@ -1,11 +1,20 @@
 <template>
-  <div class="news-view">
+  <div :key="view" class="news-view">
     <div class="news-list-nav">
-      <router-link v-if="page > 1" :to="`/v/${view}/${page - 1}`">&larr; prev</router-link>
-      <a v-else class="disabled">&larr; prev</a>
-      <span>{{ page }}/{{ maxPage }}</span>
-      <router-link v-if="hasMore" :to="`/v/${view}/${page + 1}`">more &rarr;</router-link>
-      <a v-else class="disabled">more &rarr;</a>
+      <factor-link
+        btn="primary"
+        size="small"
+        :to="`/v/${view}/${page - 1}`"
+        :disabled="page <= 1"
+      >&larr; Previous</factor-link>
+
+      <span class="pager">{{ page }} of {{ maxPage }}</span>
+      <factor-link
+        btn="primary"
+        size="small"
+        :to="`/v/${view}/${page + 1}`"
+        :disabled="!hasMore"
+      >more &rarr;</factor-link>
     </div>
 
     <transition :name="transition">
@@ -19,6 +28,7 @@
 </template>
 
 <script lang="ts">
+import { factorLink } from "@factor/ui"
 import { watchList } from "../api"
 import Vue from "vue"
 import {
@@ -35,7 +45,8 @@ export default Vue.extend({
   name: "ItemList",
 
   components: {
-    item
+    item,
+    factorLink
   },
 
   serverPrefetch(this: any) {
@@ -70,6 +81,9 @@ export default Vue.extend({
   watch: {
     page(this: any, to, from) {
       this.loadItems(to, from)
+    },
+    view(this: any) {
+      this.loadItems()
     }
   },
 
@@ -127,7 +141,6 @@ export default Vue.extend({
   left: 0;
   right: 0;
   z-index: 998;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 
   a {
     margin: 0 1em;
@@ -135,6 +148,10 @@ export default Vue.extend({
 
   .disabled {
     color: #ccc;
+  }
+
+  .pager {
+    font-weight: 700;
   }
 }
 

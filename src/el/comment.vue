@@ -18,7 +18,7 @@
 
 <script lang="ts">
 import Vue from "vue"
-import { timeAgo } from "@factor/api"
+import { timeAgo, stored } from "@factor/api"
 export default Vue.extend({
   name: "Comment",
   props: {
@@ -31,7 +31,7 @@ export default Vue.extend({
   },
   computed: {
     comment() {
-      return this.$store.state.items[this.id]
+      return stored(this.id)
     }
   },
   methods: {

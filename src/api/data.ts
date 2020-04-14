@@ -8,6 +8,7 @@ export const itemsPerPage = 50
 // current list type and current pagination
 export const getActiveIds = (): string[] => {
   const activeType = stored("activeType") ?? "top"
+
   if (!activeType) {
     return []
   }
