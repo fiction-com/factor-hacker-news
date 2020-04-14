@@ -2,12 +2,12 @@ import { fetchUser, fetchItems, fetchIdsByType } from "."
 import { storeItem, stored, currentRoute } from "@factor/api"
 import { ListTypes, DataItem, UserItem } from "./types"
 
+export const itemsPerPage = 50
+
 // ids of the items that should be currently displayed based on
 // current list type and current pagination
 export const getActiveIds = (): string[] => {
   const activeType = stored("activeType") ?? "top"
-  const itemsPerPage = stored("itemsPerPage") ?? 20
-
   if (!activeType) {
     return []
   }
@@ -115,7 +115,7 @@ export const requestListData = async ({ type }: { type: ListTypes }): Promise<vo
 
   await setList({ type, ids })
 
-  ensureActiveItems()
+  await ensureActiveItems()
 
   return
 }

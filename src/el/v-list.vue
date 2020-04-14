@@ -1,10 +1,10 @@
 <template>
   <div class="news-view">
     <div class="news-list-nav">
-      <router-link v-if="page > 1" :to="`/${type}/${page - 1}`">&larr; prev</router-link>
+      <router-link v-if="page > 1" :to="`/v/${view}/${page - 1}`">&larr; prev</router-link>
       <a v-else class="disabled">&larr; prev</a>
       <span>{{ page }}/{{ maxPage }}</span>
-      <router-link v-if="hasMore" :to="`/${type}/${page + 1}`">more &rarr;</router-link>
+      <router-link v-if="hasMore" :to="`/v/${view}/${page + 1}`">more &rarr;</router-link>
       <a v-else class="disabled">more &rarr;</a>
     </div>
 
@@ -21,7 +21,13 @@
 <script lang="ts">
 import { watchList } from "../api"
 import Vue from "vue"
-import { getActiveItems, setList, ensureActiveItems, requestListData } from "../api/data"
+import {
+  getActiveItems,
+  setList,
+  ensureActiveItems,
+  requestListData,
+  itemsPerPage
+} from "../api/data"
 import { stored } from "@factor/api"
 import item from "../el/item.vue"
 
@@ -32,8 +38,8 @@ export default Vue.extend({
     item
   },
 
-  props: {
-    type: { type: String, default: "" }
+  serverPrefetch(this: any) {
+    return requestListData({ type: this.view })
   },
 
   data() {
@@ -48,15 +54,13 @@ export default Vue.extend({
     view() {
       return this.$route.params.view ?? "top"
     },
-    itemsPerPage() {
-      return stored("itemsPerPage")
-    },
+
     page() {
       return Number(this.$route.params.page) || 1
     },
     maxPage(this: any) {
       const list = stored(this.view) ?? []
-      return Math.ceil(list.length / this.itemsPerPage)
+      return Math.ceil(list.length / itemsPerPage)
     },
     hasMore(this: any) {
       return this.page < this.maxPage
@@ -69,16 +73,15 @@ export default Vue.extend({
     }
   },
 
-  beforeMount(this: any) {
+  async beforeMount(this: any) {
     if (this.$root._isMounted) {
       this.loadItems(this.page)
     }
     // watch the current list for realtime updates
-    this.unwatchList = watchList(this.view, (ids: string[]) => {
+    this.unwatchList = await watchList(this.view, async (ids: string[]) => {
       setList({ type: this.view, ids })
-      ensureActiveItems().then(() => {
-        this.displayedItems = getActiveItems()
-      })
+      await ensureActiveItems()
+      this.displayedItems = getActiveItems()
     })
   },
 
@@ -87,19 +90,19 @@ export default Vue.extend({
   },
 
   methods: {
-    loadItems(this: any, to = this.page, from = -1) {
-      requestListData({
+    async loadItems(this: any, to = this.page, from = -1) {
+      await requestListData({
         type: this.view
-      }).then(() => {
-        if (this.page < 0 || this.page > this.maxPage) {
-          this.$router.replace(`/${this.view}/1`)
-          return
-        }
-        const transitionName = to > from ? "slide-left" : "slide-right"
-        this.transition = from === -1 ? null : transitionName
-        this.displayedPage = to
-        this.displayedItems = getActiveItems()
       })
+
+      if (this.page < 0 || this.page > this.maxPage) {
+        this.$router.replace(`/${this.view}/1`)
+        return
+      }
+      const transitionName = to > from ? "slide-left" : "slide-right"
+      this.transition = from === -1 ? null : transitionName
+      this.displayedPage = to
+      this.displayedItems = getActiveItems()
     }
   }
 })

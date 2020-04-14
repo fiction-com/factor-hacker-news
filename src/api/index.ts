@@ -1,17 +1,12 @@
 // this is aliased in webpack config based on server/client build
 // eslint-disable-next-line import/no-unresolved
 import { createAPI } from "create-api"
-import { ListTypes, DataItem, UserItem } from "./types"
+import { ListTypes, DataItem, UserItem, DataApi } from "./types"
 import Firebase from "firebase"
 
 const logRequests = !!process.env.DEBUG_API
 
-const api = createAPI({
-  version: "/v0",
-  config: {
-    databaseURL: "https://hacker-news.firebaseio.com"
-  }
-})
+let __api: DataApi
 
 const log = (text: string): void => {
   if (logRequests) {
@@ -20,8 +15,35 @@ const log = (text: string): void => {
   }
 }
 
+const warmCache = (api: DataApi): void => {
+  // eslint-disable-next-line @typescript-eslint/no-use-before-define
+  fetchItems((api.cachedIds?.top ?? []).slice(0, 30))
+  setTimeout(() => warmCache(api), 1000 * 60 * 15)
+}
+
+const getApi = async (): Promise<DataApi> => {
+  if (!__api) {
+    __api = await createAPI({
+      version: "/v0",
+      config: {
+        databaseURL: "https://hacker-news.firebaseio.com"
+      }
+    })
+
+    // warm the front page cache every 15 min
+    // make sure to do this only once across all requests
+    if (__api.onServer) {
+      warmCache(__api)
+    }
+  }
+
+  return __api
+}
+
 const fetch = async <T>(child: string): Promise<T> => {
   log(`fetching ${child}...`)
+
+  const api = await getApi()
 
   const cache = api.cachedItems
 
@@ -53,22 +75,17 @@ export const fetchItem = (id: string): Promise<DataItem> => {
   return fetch<DataItem>(`item/${id}`)
 }
 
-export const fetchUser = (id: string): Promise<UserItem> => {
-  return fetch<UserItem>(`user/${id}`)
-}
-
 export const fetchItems = async (ids: string[]): Promise<DataItem[]> => {
   const items = await Promise.all(ids.map(id => fetchItem(id)))
   return items
 }
 
-const warmCache = (): void => {
-  fetchItems((api.cachedIds?.top ?? []).slice(0, 30))
-  setTimeout(warmCache, 1000 * 60 * 15)
+export const fetchUser = (id: string): Promise<UserItem> => {
+  return fetch<UserItem>(`user/${id}`)
 }
 
 export const fetchIdsByType = async (type: ListTypes): Promise<string[]> => {
-  const { cachedIds } = api
+  const { cachedIds } = await getApi()
 
   if (cachedIds && cachedIds[type]) {
     return cachedIds[type]
@@ -77,8 +94,12 @@ export const fetchIdsByType = async (type: ListTypes): Promise<string[]> => {
   }
 }
 
-export const watchList = (type: ListTypes, callback: Function): Function => {
+export const watchList = async (
+  type: ListTypes,
+  callback: Function
+): Promise<Function> => {
   let first = true
+  const api = await getApi()
   const reference = api.child(`${type}stories`)
 
   const handler = (snapshot: Firebase.database.DataSnapshot | null): void => {
@@ -94,8 +115,4 @@ export const watchList = (type: ListTypes, callback: Function): Function => {
   }
 }
 
-// warm the front page cache every 15 min
-// make sure to do this only once across all requests
-if (api.onServer) {
-  warmCache()
-}
+getApi()

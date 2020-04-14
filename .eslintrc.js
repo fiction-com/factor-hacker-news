@@ -45,7 +45,19 @@ module.exports = {
     "@typescript-eslint/no-use-before-define": "warn", // can cause organization issues
     "func-style": ["warn", "expression"],
     "@typescript-eslint/no-var-requires": "off", // overridden for .ts files
-    "@typescript-eslint/no-explicit-any": "off"
+    "@typescript-eslint/no-explicit-any": "off",
+    "vue/html-self-closing": [
+      "error",
+      {
+        html: {
+          void: "always",
+          normal: "always",
+          component: "always"
+        },
+        svg: "always",
+        math: "always"
+      }
+    ]
   },
   overrides: [
     {

@@ -3,7 +3,7 @@ import LRU from "lru-cache"
 
 import { listTypesArray, DataApi, ApiArguments } from "./types"
 
-export const createAPI = ({ config, version }: ApiArguments): DataApi => {
+export const createAPI = async ({ config, version }: ApiArguments): Promise<DataApi> => {
   let api: DataApi
   // this piece of code may run multiple times in development mode,
   // so we attach the instantiated API to `process` to avoid duplications
@@ -24,13 +24,21 @@ export const createAPI = ({ config, version }: ApiArguments): DataApi => {
     // cache the latest story ids
     api.cachedIds = {}
 
-    listTypesArray.forEach(type => {
-      api.child(`${type}stories`).on("value", snapshot => {
-        if (snapshot && api.cachedIds) {
-          api.cachedIds[type] = snapshot.val()
-        }
+    const _promises: Promise<void>[] = []
+
+    listTypesArray.forEach(view => {
+      const _promise = new Promise<void>((resolve, reject) => {
+        api.child(`${view}stories`).on("value", snapshot => {
+          if (snapshot && api.cachedIds) {
+            api.cachedIds[view] = snapshot.val()
+          }
+          resolve()
+        })
       })
+      _promises.push(_promise)
     })
+
+    await Promise.all(_promises)
   }
   return api
 }
