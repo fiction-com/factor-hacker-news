@@ -1,12 +1,13 @@
 import { addContentRoutes, addFilter } from "@factor/api"
 
-const itemView = () => import("./views/v-item.vue")
-const userView = () => import("./views/v-user.vue")
-const listView = () => import("./views/list-item.vue")
+const itemView = (): Promise<any> => import("./el/v-item.vue")
+const userView = (): Promise<any> => import("./el/v-user.vue")
+const listView = (): Promise<any> => import("./el/v-list.vue")
 
 addContentRoutes({
   key: "appRoutes",
   routes: [
+    { path: "/v/:view", component: listView },
     { path: "/v/:view/:page", component: listView },
     { path: "/item/:id", component: itemView },
     { path: "/user/:id", component: userView },

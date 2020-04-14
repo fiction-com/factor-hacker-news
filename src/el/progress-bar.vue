@@ -4,12 +4,12 @@
   <div
     class="progress"
     :style="{
-    'width': percent+'%',
-    'height': height,
-    'background-color': canSuccess? color : failedColor,
-    'opacity': show ? 1 : 0
-  }"
-  ></div>
+      'width': percent+'%',
+      'height': height,
+      'background-color': canSuccess? color : failedColor,
+      'opacity': show ? 1 : 0
+    }"
+  />
 </template>
 
 <script lang="ts">
@@ -43,21 +43,21 @@ export default Vue.extend({
       }, 100)
       return this
     },
-    set(num: number) {
+    set(number) {
       this.show = true
       this.canSuccess = true
-      this.percent = Math.floor(num)
+      this.percent = Math.floor(number)
       return this
     },
     get() {
       return Math.floor(this.percent)
     },
-    increase(num: number) {
-      this.percent = this.percent + Math.floor(num)
+    increase(number) {
+      this.percent = this.percent + Math.floor(number)
       return this
     },
-    decrease(num: number) {
-      this.percent = this.percent - Math.floor(num)
+    decrease(number) {
+      this.percent = this.percent - Math.floor(number)
       return this
     },
     finish() {

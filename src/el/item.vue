@@ -10,7 +10,7 @@
         <router-link :to="'/item/' + item.id">{{ item.title }}</router-link>
       </template>
     </span>
-    <br />
+    <br >
     <span class="meta">
       <span v-if="item.type !== 'job'" class="by">
         by
@@ -22,16 +22,18 @@
         <router-link :to="'/item/' + item.id">{{ item.descendants }} comments</router-link>
       </span>
     </span>
-    <span class="label" v-if="item.type !== 'story'">{{ item.type }}</span>
+    <span v-if="item.type !== 'story'" class="label">{{ item.type }}</span>
   </li>
 </template>
 
 <script>
-import { timeAgo } from "../util/filters"
+import { timeAgo } from "@factor/api"
 
 export default {
-  name: "news-item",
-  props: ["item"],
+  name: "NewsItem",
+  props: {
+    item: {type: Object, default: () => {}}
+  },
   // http://ssr.vuejs.org/en/caching.html#component-level-caching
   serverCacheKey: ({ item: { id, __lastUpdated, time } }) => {
     return `${id}::${__lastUpdated}::${timeAgo(time)}`

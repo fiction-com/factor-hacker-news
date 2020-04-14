@@ -5,13 +5,13 @@
       <ul class="meta">
         <li>
           <span class="label">Created:</span>
-          {{ user.created | timeAgo }} ago
+          {{ timeAgo(user.created) }} ago
         </li>
         <li>
           <span class="label">Karma:</span>
           {{ user.karma }}
         </li>
-        <li v-if="user.about" v-html="user.about" class="about"></li>
+        <li v-if="user.about" v-formatted-text="user.about" class="about" />
       </ul>
       <p class="links">
         <a :href="'https://news.ycombinator.com/submitted?id=' + user.id">submissions</a> |
@@ -27,8 +27,9 @@
 <script lang="ts">
 import Vue from "vue"
 import { timeAgo } from "@factor/api"
+import {requestUser} from "../api/data"
 export default Vue.extend({
-  name: "user-view",
+  name: "UserView",
 
   computed: {
     user(this: any) {
@@ -37,7 +38,7 @@ export default Vue.extend({
   },
 
   serverPrefetch() {
-    return store.dispatch("FETCH_USER", { id: this.$route.params.id })
+    return requestUser({ id: this.$route.params.id })
   },
 
   metaInfo() {

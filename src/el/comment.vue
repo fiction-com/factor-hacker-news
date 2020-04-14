@@ -4,14 +4,14 @@
       <router-link :to="'/user/' + comment.by">{{ comment.by }}</router-link>
       {{ timeAgo(comment.time) }} ago
     </div>
-    <div class="text" v-html="comment.text"></div>
-    <div class="toggle" :class="{ open }" v-if="comment.kids && comment.kids.length">
+    <div v-formatted-text="comment.text" class="text"/>
+    <div v-if="comment.kids && comment.kids.length" class="toggle" :class="{ open }">
       <a
         @click="open = !open"
       >{{ open ? '[-]' : '[+] ' + pluralize(comment.kids.length) + ' collapsed' }}</a>
     </div>
-    <ul class="comment-children" v-show="open">
-      <comment v-for="id in comment.kids" :key="id" :id="id"></comment>
+    <ul v-show="open" class="comment-children">
+      <comment v-for="kid in comment.kids" :id="kid" :key="kid"/>
     </ul>
   </li>
 </template>
@@ -20,8 +20,10 @@
 import Vue from "vue"
 import { timeAgo } from "@factor/api"
 export default Vue.extend({
-  name: "comment",
-  props: ["id"],
+  name: "Comment",
+  props: {
+    id: {type: String, default: ""}
+  },
   data() {
     return {
       open: true

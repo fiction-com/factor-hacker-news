@@ -7,7 +7,10 @@
   "scripts": {
     "dev": "npx factor dev",
     "start": "npx factor start",
-    "build": "npx factor build"
+    "build": "npx factor build",
+    "lint": "npm run eslint && npm run types",
+    "types": "tsc --skipLibCheck",
+    "eslint": "eslint --ext .ts,.js,.vue,.json ."
   },
   "dependencies": {
     "@factor/core": "^1.0.0",
@@ -30,7 +33,9 @@
     "eslint-plugin-unicorn": "^17.2.0",
     "eslint-plugin-vue": "^6.0.0",
     "prettier": "^1.17.1",
-    "prettier-eslint": "^9.0.0"
+    "prettier-eslint": "^9.0.0",
+    "@typescript-eslint/eslint-plugin": "^2.17.0",
+    "@typescript-eslint/parser": "^2.8.0"
   },
   "factor": {
     "app": {

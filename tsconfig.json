@@ -12,6 +12,10 @@
     "esModuleInterop": true,
     "moduleResolution": "node",
     "baseUrl": ".",
-    "skipLibCheck": true
-  }
+    "skipLibCheck": true,
+    "paths": {
+      "create-api": ["src/api/create-api-server"]
+    }
+  },
+  "exclude": ["node_modules", "**/dist"]
 }

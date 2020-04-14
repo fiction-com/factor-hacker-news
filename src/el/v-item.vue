@@ -1,11 +1,11 @@
 <template>
-  <div class="item-view" v-if="item">
+  <div v-if="item" class="item-view">
     <template v-if="item">
       <div class="item-view-header">
         <a :href="item.url" target="_blank">
           <h1>{{ item.title }}</h1>
         </a>
-        <span v-if="item.url" class="host">({{ item.url | host }})</span>
+        <span v-if="item.url" class="host">({{ niceHost(item.url) }})</span>
         <p class="meta">
           {{ item.score }} points
           | by
@@ -16,10 +16,11 @@
       <div class="item-view-comments">
         <p class="item-view-comments-header">
           {{ item.kids ? item.descendants + ' comments' : 'No comments yet.' }}
-          <spinner :show="loading"></spinner>
+          <spinner :show="loading" />
         </p>
+
         <ul v-if="!loading" class="comment-children">
-          <comment v-for="id in item.kids" :key="id" :id="id"></comment>
+          <comment v-for="id in item.kids" :id="id" :key="id" />
         </ul>
       </div>
     </template>
@@ -27,13 +28,15 @@
 </template>
 
 <script lang="ts">
-import { timeAgo } from "@factor/api"
+import { niceHost } from "../api/util"
+import { timeAgo, stored } from "@factor/api"
 import spinner from "../el/spinner.vue"
 import comment from "../el/comment.vue"
-import { requestItems } from "../data"
 import Vue from "vue"
+import { fetchComments, requestItems } from "../api/data"
+
 export default Vue.extend({
-  name: "item-view",
+  name: "ItemView",
   components: { spinner, comment },
 
   data: () => ({
@@ -42,7 +45,7 @@ export default Vue.extend({
 
   computed: {
     item() {
-      return this.$store.state.items[this.$route.params.id]
+      return stored(this.$route.params.id)
     }
   },
 
@@ -50,12 +53,7 @@ export default Vue.extend({
   // it might take a long time to load threads with hundreds of comments
   // due to how the HN Firebase API works.
   serverPrefetch() {
-    return requestItems({ ids: [id] })
-  },
-
-  // Fetch comments when mounted on the client
-  beforeMount(this: any) {
-    this.fetchComments()
+    return requestItems({ ids: [this.$route.params.id] })
   },
 
   // refetch comments if item changed
@@ -63,37 +61,25 @@ export default Vue.extend({
     item: "fetchComments"
   },
 
+  // Fetch comments when mounted on the client
+  beforeMount(this: any) {
+    this.fetchComments()
+  },
+
   methods: {
     timeAgo,
-    fetchComments(this: any) {
+    niceHost,
+    async fetchComments(this: any) {
       if (!this.item || !this.item.kids) {
         return
       }
 
       this.loading = true
-      fetchComments(this.$store, this.item).then(() => {
-        this.loading = false
-      })
+      await fetchComments(this.item)
+      this.loading = false
     }
   }
 })
-
-// recursively fetch all descendent comments
-function fetchComments(store, item) {
-  if (item && item.kids) {
-    return store
-      .dispatch("FETCH_ITEMS", {
-        ids: item.kids
-      })
-      .then(() =>
-        Promise.all(
-          item.kids.map(id => {
-            return fetchComments(store, store.state.items[id])
-          })
-        )
-      )
-  }
-}
 </script>
 
 <style lang="less">

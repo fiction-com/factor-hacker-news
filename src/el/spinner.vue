@@ -1,9 +1,9 @@
 <template>
   <transition>
     <svg
+      v-show="show"
       class="spinner"
       :class="{ show: show }"
-      v-show="show"
       width="44px"
       height="44px"
       viewBox="0 0 44 44"
@@ -23,9 +23,11 @@
 
 <script lang="ts">
 export default {
-  name: "spinner",
-  props: ["show"],
-  serverCacheKey: props => props.show
+  name: "Spinner",
+  props: {
+    show: {type: Boolean, default: false}
+  },
+  serverCacheKey: properties => properties.show
 }
 </script>
 

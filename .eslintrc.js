@@ -32,33 +32,11 @@ module.exports = {
   rules: {
     "no-console": "error",
     "no-debugger": "error",
-
-    "import/order": [
-      "error",
-      {
-        groups: ["builtin", "external", "parent", "sibling", "index"]
-      }
-    ],
-    complexity: 2,
     semi: ["error", "never"],
-    "unicorn/no-abusive-eslint-disable": 0,
-    "unicorn/prevent-abbreviations": "off",
+    "func-style": ["warn", "expression"],
     "@typescript-eslint/no-empty-function": "off",
     "import/no-cycle": 2,
     "import/extensions": ["warn", "always", { ts: "never", js: "never" }],
-
-    "vue/html-self-closing": [
-      "error",
-      {
-        html: {
-          void: "always",
-          normal: "always",
-          component: "always"
-        },
-        svg: "always",
-        math: "always"
-      }
-    ],
     "vue/html-closing-bracket-spacing": "off",
     "vue/multiline-html-element-content-newline": "off",
     "vue/singleline-html-element-content-newline": "off",
@@ -67,7 +45,6 @@ module.exports = {
     "@typescript-eslint/no-use-before-define": "warn", // can cause organization issues
     "func-style": ["warn", "expression"],
     "@typescript-eslint/no-var-requires": "off", // overridden for .ts files
-    "@typescript-eslint/ban-ts-ignore": "off",
     "@typescript-eslint/no-explicit-any": "off"
   },
   overrides: [
@@ -75,9 +52,11 @@ module.exports = {
       // enable the rule specifically for TypeScript files
       files: ["*.ts", "*.tsx"],
       rules: {
-        "@typescript-eslint/explicit-function-return-type": ["warn"],
-        "@typescript-eslint/ban-ts-ignore": "warn"
+        "@typescript-eslint/explicit-function-return-type": ["warn"]
       }
     }
-  ]
+  ],
+  settings: {
+    "import/ignore": ["firebase", "create-api"]
+  }
 }

@@ -1,5 +1,8 @@
 // this is aliased in webpack config based on server/client build
+// eslint-disable-next-line import/no-unresolved
 import { createAPI } from "create-api"
+import { ListTypes, DataItem, UserItem } from "./types"
+import Firebase from "firebase"
 
 const logRequests = !!process.env.DEBUG_API
 
@@ -10,71 +13,89 @@ const api = createAPI({
   }
 })
 
-// warm the front page cache every 15 min
-// make sure to do this only once across all requests
-if (api.onServer) {
-  warmCache()
+const log = (text: string): void => {
+  if (logRequests) {
+    // eslint-disable-next-line no-console
+    console.log(text)
+  }
 }
 
-function warmCache() {
-  fetchItems((api.cachedIds.top || []).slice(0, 30))
-  setTimeout(warmCache, 1000 * 60 * 15)
-}
+const fetch = async <T>(child: string): Promise<T> => {
+  log(`fetching ${child}...`)
 
-function fetch(child) {
-  logRequests && console.log(`fetching ${child}...`)
   const cache = api.cachedItems
+
   if (cache && cache.has(child)) {
-    logRequests && console.log(`cache hit for ${child}.`)
-    return Promise.resolve(cache.get(child))
+    log(`cache hit for ${child}.`)
+    return cache.get(child)
   } else {
-    return new Promise((resolve, reject) => {
+    const value: T = await new Promise((resolve, reject) => {
       api.child(child).once(
         "value",
         snapshot => {
-          const val = snapshot.val()
+          const value_ = snapshot.val()
           // mark the timestamp when this item is cached
-          if (val) val.__lastUpdated = Date.now()
-          cache && cache.set(child, val)
-          logRequests && console.log(`fetched ${child}.`)
-          resolve(val)
+          if (value_) value_.__lastUpdated = Date.now()
+          if (cache) cache.set(child, value_)
+          log(`fetched ${child}.`)
+
+          resolve(value_)
         },
         reject
       )
     })
+
+    return value
   }
 }
 
-export function fetchIdsByType(type) {
-  return api.cachedIds && api.cachedIds[type]
-    ? Promise.resolve(api.cachedIds[type])
-    : fetch(`${type}stories`)
+export const fetchItem = (id: string): Promise<DataItem> => {
+  return fetch<DataItem>(`item/${id}`)
 }
 
-export function fetchItem(id) {
-  return fetch(`item/${id}`)
+export const fetchUser = (id: string): Promise<UserItem> => {
+  return fetch<UserItem>(`user/${id}`)
 }
 
-export function fetchItems(ids) {
-  return Promise.all(ids.map(id => fetchItem(id)))
+export const fetchItems = async (ids: string[]): Promise<DataItem[]> => {
+  const items = await Promise.all(ids.map(id => fetchItem(id)))
+  return items
 }
 
-export function fetchUser(id) {
-  return fetch(`user/${id}`)
+const warmCache = (): void => {
+  fetchItems((api.cachedIds?.top ?? []).slice(0, 30))
+  setTimeout(warmCache, 1000 * 60 * 15)
 }
 
-export function watchList(type, cb) {
+export const fetchIdsByType = async (type: ListTypes): Promise<string[]> => {
+  const { cachedIds } = api
+
+  if (cachedIds && cachedIds[type]) {
+    return cachedIds[type]
+  } else {
+    return await fetch<string[]>(`${type}stories`)
+  }
+}
+
+export const watchList = (type: ListTypes, callback: Function): Function => {
   let first = true
-  const ref = api.child(`${type}stories`)
-  const handler = snapshot => {
+  const reference = api.child(`${type}stories`)
+
+  const handler = (snapshot: Firebase.database.DataSnapshot | null): void => {
     if (first) {
       first = false
-    } else {
-      cb(snapshot.val())
+    } else if (snapshot) {
+      callback(snapshot.val())
     }
   }
-  ref.on("value", handler)
-  return () => {
-    ref.off("value", handler)
+  reference.on("value", handler)
+  return (): void => {
+    reference.off("value", handler)
   }
+}
+
+// warm the front page cache every 15 min
+// make sure to do this only once across all requests
+if (api.onServer) {
+  warmCache()
 }

@@ -3,7 +3,7 @@
     <header class="header">
       <nav class="inner">
         <router-link to="/" exact>
-          <img class="logo" src="~static/logo-48.png" alt="logo" />
+          <img class="logo" src="~static/logo-48.png" alt="logo" >
         </router-link>
         <router-link to="/v/top">Top</router-link>
         <router-link to="/v/new">New</router-link>
@@ -19,7 +19,7 @@
       </nav>
     </header>
     <transition name="fade" mode="out-in">
-      <router-view class="view"></router-view>
+      <router-view class="view"/>
     </transition>
   </div>
 </template>
