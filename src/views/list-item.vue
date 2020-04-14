@@ -19,13 +19,13 @@
 
 <script>
 import { watchList } from "../api"
-import Item from "../components/Item.vue"
+import item from "../el/item.vue"
 
 export default {
   name: "item-list",
 
   components: {
-    Item
+    item
   },
 
   props: {

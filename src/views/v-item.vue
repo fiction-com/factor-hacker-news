@@ -28,12 +28,13 @@
 
 <script lang="ts">
 import { timeAgo } from "@factor/api"
-import Spinner from "../components/Spinner.vue"
-import Comment from "../components/Comment.vue"
+import spinner from "../el/spinner.vue"
+import comment from "../el/comment.vue"
+import { requestItems } from "../data"
 import Vue from "vue"
 export default Vue.extend({
   name: "item-view",
-  components: { Spinner, Comment },
+  components: { spinner, comment },
 
   data: () => ({
     loading: true
@@ -48,21 +49,12 @@ export default Vue.extend({
   // We only fetch the item itself before entering the view, because
   // it might take a long time to load threads with hundreds of comments
   // due to how the HN Firebase API works.
-  asyncData({
-    store,
-    route: {
-      params: { id }
-    }
-  }) {
-    return store.dispatch("FETCH_ITEMS", { ids: [id] })
-  },
-
-  title() {
-    return this.item.title
+  serverPrefetch() {
+    return requestItems({ ids: [id] })
   },
 
   // Fetch comments when mounted on the client
-  beforeMount() {
+  beforeMount(this: any) {
     this.fetchComments()
   },
 
@@ -73,7 +65,7 @@ export default Vue.extend({
 
   methods: {
     timeAgo,
-    fetchComments() {
+    fetchComments(this: any) {
       if (!this.item || !this.item.kids) {
         return
       }

@@ -6,13 +6,9 @@
     </div>
     <div class="text" v-html="comment.text"></div>
     <div class="toggle" :class="{ open }" v-if="comment.kids && comment.kids.length">
-      <a @click="open = !open">
-        {{
-        open
-        ? '[-]'
-        : '[+] ' + pluralize(comment.kids.length) + ' collapsed'
-        }}
-      </a>
+      <a
+        @click="open = !open"
+      >{{ open ? '[-]' : '[+] ' + pluralize(comment.kids.length) + ' collapsed' }}</a>
     </div>
     <ul class="comment-children" v-show="open">
       <comment v-for="id in comment.kids" :key="id" :id="id"></comment>
