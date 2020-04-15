@@ -1,7 +1,7 @@
 <h1 align="center">Factor - Hacker News Example</h1>
 
 <p align="center">
-HackerNews clone built with Factor. Includes framework features, SSR, routes, store.
+HackerNews clone built with Factor, Vue and TypeScript.
 </p>
 
 <p align="center">
@@ -16,16 +16,16 @@ HackerNews clone built with Factor. Includes framework features, SSR, routes, st
 
 ## About
 
-This is an example of the framework capabilities of Factor.
+This is an example of the framework capabilities of Factor. Use it as a reference for core API tools (`@factor/api`) as well as a helpful structure for a typical JS app.
 
 ## Features
 
-- Uses flat store + cache with `stored` and `storeItem` items
+- Uses flat store + cache (using `stored` and `storeItem` utilities)
 - Supports multiple views and routes
 - Complete Vue SSR framework
 - Real-time updating with animation
-- Meta handling with image, title, etc
-- Icon/Favicon
+- Meta handling with image, title, icon/favicon
+- ESlint, Prettier, TypeScript configured
 
 ## Docs and Architecture Overview
 
