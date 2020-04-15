@@ -24,7 +24,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from "vue"
 import { timeAgo, stored } from "@factor/api"
 import { requestUser } from "../api/data"
@@ -32,7 +32,7 @@ export default Vue.extend({
   name: "UserView",
 
   computed: {
-    user(this: any) {
+    user() {
       return stored(this.$route.params.id)
     }
   },
@@ -41,7 +41,7 @@ export default Vue.extend({
     return requestUser({ id: this.$route.params.id })
   },
 
-  async beforeMount(this: any) {
+  async beforeMount() {
     if (this.$root._isMounted) {
       await requestUser({ id: this.$route.params.id })
     }

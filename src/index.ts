@@ -1,6 +1,7 @@
 import { addContentRoutes, addFilter, addCallback } from "@factor/api"
 import { listTypesArray } from "./api/types"
 
+
 /**
  * Primary view components
  * Vue natively has support for the dynamic imports format below

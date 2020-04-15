@@ -21,7 +21,7 @@
   </transition>
 </template>
 
-<script lang="ts">
+<script>
 export default {
   name: "Spinner",
   props: {

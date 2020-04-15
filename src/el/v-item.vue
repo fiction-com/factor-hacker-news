@@ -27,7 +27,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import { niceHost } from "../api/util"
 import { timeAgo, stored } from "@factor/api"
 import spinner from "../el/spinner.vue"
@@ -62,14 +62,14 @@ export default Vue.extend({
   },
 
   // Fetch comments when mounted on the client
-  beforeMount(this: any) {
+  beforeMount() {
     this.fetchComments()
   },
 
   methods: {
     timeAgo,
     niceHost,
-    async fetchComments(this: any) {
+    async fetchComments() {
       if (!this.item || !this.item.kids) {
         return
       }

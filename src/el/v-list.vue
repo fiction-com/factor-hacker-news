@@ -27,7 +27,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import { factorLink } from "@factor/ui"
 import { watchList } from "../api"
 import Vue from "vue"
@@ -54,7 +54,7 @@ export default Vue.extend({
     }
   },
 
-  serverPrefetch(this: any) {
+  serverPrefetch() {
     return requestListData({ type: this.view })
   },
 
@@ -67,49 +67,49 @@ export default Vue.extend({
   },
 
   computed: {
-    view(this: any) {
-      return this.$route.params.view ?? "top"
+    view() {
+      return this.$route.params.view || "top"
     },
 
     page() {
       return Number(this.$route.params.page) || 1
     },
-    maxPage(this: any) {
-      const list = stored(this.view) ?? []
+    maxPage() {
+      const list = stored(this.view) || []
       return Math.ceil(list.length / itemsPerPage)
     },
-    hasMore(this: any) {
+    hasMore() {
       return this.page < this.maxPage
     }
   },
 
   watch: {
-    page(this: any, to, from) {
+    page(to, from) {
       this.loadItems(to, from)
     },
-    view(this: any) {
+    view() {
       this.loadItems()
     }
   },
 
-  async beforeMount(this: any) {
+  async beforeMount() {
     if (this.$root._isMounted) {
       this.loadItems(this.page)
     }
     // watch the current list for realtime updates
-    this.unwatchList = await watchList(this.view, async (ids: string[]) => {
+    this.unwatchList = await watchList(this.view, async (ids) => {
       setList({ type: this.view, ids })
       await ensureActiveItems()
       this.displayedItems = getActiveItems()
     })
   },
 
-  beforeDestroy(this: any) {
+  beforeDestroy() {
     this.unwatchList()
   },
 
   methods: {
-    async loadItems(this: any, to = this.page, from = -1) {
+    async loadItems(to = this.page, from = -1) {
       await requestListData({
         type: this.view
       })

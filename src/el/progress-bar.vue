@@ -12,7 +12,7 @@
   />
 </template>
 
-<script lang="ts">
+<script>
 import Vue from "vue"
 export default Vue.extend({
   data() {
@@ -27,7 +27,7 @@ export default Vue.extend({
     }
   },
   methods: {
-    start(this: any) {
+    start() {
       this.show = true
       this.canSuccess = true
       if (this._timer) {
@@ -65,11 +65,11 @@ export default Vue.extend({
       this.hide()
       return this
     },
-    pause(this: any) {
+    pause() {
       clearInterval(this._timer)
       return this
     },
-    hide(this: any) {
+    hide() {
       clearInterval(this._timer)
       this._timer = null
       setTimeout(() => {

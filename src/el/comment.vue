@@ -16,7 +16,7 @@
   </li>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from "vue"
 import { timeAgo, stored } from "@factor/api"
 export default Vue.extend({
@@ -36,7 +36,7 @@ export default Vue.extend({
   },
   methods: {
     timeAgo,
-    pluralize: (n: number) => n + (n === 1 ? " reply" : " replies")
+    pluralize: n => n + (n === 1 ? " reply" : " replies")
   }
 })
 </script>
