@@ -138,6 +138,10 @@ export default Vue.extend({
   border-radius: 2px;
 }
 
+.scrolled .news-list-nav{
+    box-shadow: 0 1px 3px rgba(40,40,40, .1);
+  }
+
 .news-list-nav {
   padding: 15px 30px;
   position: fixed;

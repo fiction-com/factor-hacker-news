@@ -54,6 +54,8 @@ export default Vue.extend({
 </script>
 
 <style lang="less">
+// Set site wide CSS variables
+// Many of these are standard and used by plugins/themes also
 html.factor-app {
   --color-text: #34495e;
   --color-primary: #f60;
@@ -63,6 +65,7 @@ html.factor-app {
   --font-weight-normal: 500;
   --font-weight-bold: 700;
   --color-bg: #ffffff;
+  --color-border: #eee;
   font-size: 16px; // 1rem
   font-weight: var(--font-weight-normal);
   background-color: var(--color-bg);
@@ -75,6 +78,7 @@ html.factor-app {
     color: #34495e;
     text-decoration: none;
   }
+
 
   .header {
     background-color: var(--color-primary);
@@ -91,7 +95,7 @@ html.factor-app {
       justify-content: space-between;
       align-items: center;
       margin: 0px auto;
-      padding: 15px 5px;
+      padding: 12px 5px;
     }
 
     a {
