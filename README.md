@@ -1,10 +1,12 @@
-# factor-hacker-news
+<h1 align="center">Factor - Hacker News Example</h1>
 
+<p align="center">
 HackerNews clone built with Factor. Includes framework features, SSR, routes, store.
+</p>
 
 <p align="center">
   <a href="https://hacker-news-example.factor.dev" target="_blank">
-    <img src="./screenshot-tall.jpg" width="350px" style="border: 2px solid #ff0;">
+    <img src="./screenshot-wide.jpg" width="500px" style="border: 2px solid #ff0;">
   </a>
 </p>
 
