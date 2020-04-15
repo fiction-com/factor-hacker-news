@@ -38,7 +38,7 @@ import {
   requestListData,
   itemsPerPage
 } from "../api/data"
-import { stored } from "@factor/api"
+import { stored, toLabel } from "@factor/api"
 import item from "../el/item.vue"
 
 export default Vue.extend({
@@ -47,6 +47,11 @@ export default Vue.extend({
   components: {
     item,
     factorLink
+  },
+  metaInfo() {
+    return {
+      title: toLabel(this.view)
+    }
   },
 
   serverPrefetch(this: any) {
@@ -62,7 +67,7 @@ export default Vue.extend({
   },
 
   computed: {
-    view() {
+    view(this: any) {
       return this.$route.params.view ?? "top"
     },
 
