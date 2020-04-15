@@ -14,12 +14,18 @@ HackerNews clone built with Factor. Includes framework features, SSR, routes, st
 <a href="https://hacker-news-example.factor.dev" target="_blank"><strong>Live Demo &rarr;</strong></a>
 </p>
 
+## About
+
+This is an example of the framework capabilities of Factor.
+
 ## Features
 
 - Uses flat store + cache with `stored` and `storeItem` items
 - Supports multiple views and routes
 - Complete Vue SSR framework
 - Real-time updating with animation
+- Meta handling with image, title, etc
+- Icon/Favicon
 
 ## Docs and Architecture Overview
 
