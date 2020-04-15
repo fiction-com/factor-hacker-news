@@ -5,7 +5,7 @@ etc) and demonstrates server rendering.
 
 <p align="center">
   <a href="https://hacker-news-example.factor.dev" target="_blank">
-    <img src="./screenshot-wide.jpg" width="700px">
+    <img src="./screenshot-tall.jpg" width="700px">
     <br>
     Live Demo
   </a>
