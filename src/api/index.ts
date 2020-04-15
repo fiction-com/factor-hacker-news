@@ -15,12 +15,18 @@ const log = (text: string): void => {
   }
 }
 
+/**
+ * Keeps the item cache fresh on server
+ */
 const warmCache = (api: DataApi): void => {
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
   fetchItems((api.cachedIds?.top ?? []).slice(0, 30))
   setTimeout(() => warmCache(api), 1000 * 60 * 15)
 }
 
+/**
+ * Gets the universal api for HN
+ */
 const getApi = async (): Promise<DataApi> => {
   if (!__api) {
     __api = await createAPI({
@@ -40,6 +46,9 @@ const getApi = async (): Promise<DataApi> => {
   return __api
 }
 
+/**
+ * Get a data item using cache
+ */
 const fetch = async <T>(child: string): Promise<T> => {
   log(`fetching ${child}...`)
 
@@ -94,6 +103,9 @@ export const fetchIdsByType = async (type: ListTypes): Promise<string[]> => {
   }
 }
 
+/**
+ * Watch the items on a list
+ */
 export const watchList = async (
   type: ListTypes,
   callback: Function

@@ -1,11 +1,17 @@
 import Firebase from "firebase"
 import LRU from "lru-cache"
 
+/**
+ * Provided to Firebase
+ */
 export interface ApiArguments {
   config: { databaseURL: string };
   version: string;
 }
 
+/**
+ * General data item shape
+ */
 export interface DataItem {
   id: string;
   kids: string[];
@@ -18,6 +24,9 @@ export interface DataItem {
   [data: string]: any;
 }
 
+/**
+ * User shape
+ */
 export type UserItem =
   | (DataItem & {
       karma: number;
@@ -26,6 +35,9 @@ export type UserItem =
     })
   | false
 
+/**
+ * Types of lists
+ */
 export enum ListTypes {
   TOP = "top",
   NEW = "new",

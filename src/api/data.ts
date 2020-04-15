@@ -4,8 +4,10 @@ import { ListTypes, DataItem, UserItem } from "./types"
 
 export const itemsPerPage = 50
 
-// ids of the items that should be currently displayed based on
-// current list type and current pagination
+/**
+ * Ids of the items that should be currently displayed based on
+ * current list type and current pagination
+ */
 export const getActiveIds = (): string[] => {
   const activeType = stored("activeType") ?? "top"
 
@@ -24,6 +26,9 @@ export const getActiveIds = (): string[] => {
   return list.slice(start, end)
 }
 
+/**
+ * Set a list of items in the store
+ */
 export const setItems = ({ items }: { items: DataItem[] }): void => {
   items.forEach(item => {
     if (item) {
@@ -32,9 +37,12 @@ export const setItems = ({ items }: { items: DataItem[] }): void => {
   })
 }
 
+/**
+ * on the client, the store itself serves as a cache.
+ * only fetch items that we do not already have, or has expired (3 minutes)
+ * @param ids - list of HN item ids
+ */
 export const requestItems = async ({ ids }: { ids: string[] }): Promise<void> => {
-  // on the client, the store itself serves as a cache.
-  // only fetch items that we do not already have, or has expired (3 minutes)
   const now = Date.now()
   ids = ids.filter((id: string) => {
     const item = stored(id)
@@ -54,7 +62,9 @@ export const requestItems = async ({ ids }: { ids: string[] }): Promise<void> =>
   return
 }
 
-// ensure all active items are fetched
+/**
+ * ensure all active items are fetched and in store
+ */
 export const ensureActiveItems = (): Promise<void> => {
   return requestItems({
     ids: getActiveIds()
@@ -85,7 +95,9 @@ export const setList = ({ type, ids }: { type: ListTypes; ids: string[] }): void
   storeItem(type, ids)
 }
 
-// recursively fetch all descendent comments
+/**
+ * recursively fetch all descendent comments
+ */
 export const fetchComments = async (item: DataItem): Promise<void> => {
   if (item && item.kids) {
     await requestItems({
@@ -100,15 +112,19 @@ export const fetchComments = async (item: DataItem): Promise<void> => {
   } else return
 }
 
-// items that should be currently displayed.
-// this Array may not be fully fetched.
+/**
+ * items that should be currently displayed.
+ * this Array may not be fully fetched.
+ */
 export const getActiveItems = (): DataItem[] => {
   return getActiveIds()
     .map((id: string | number) => stored(id))
     .filter((_: any) => _)
 }
 
-// ensure data for rendering given list type
+/**
+ * ensure data for rendering given list type
+ */
 export const requestListData = async ({ type }: { type: ListTypes }): Promise<void> => {
   setActiveType({ type })
 

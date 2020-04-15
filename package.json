@@ -1,6 +1,6 @@
 {
   "name": "factor-hacker-news",
-  "description": "A Factor CMS project",
+  "description": "A Factor project",
   "author": "Andrew Powers <andrew@fiction.com>",
   "private": true,
   "main": "src/index",
@@ -15,6 +15,7 @@
   "dependencies": {
     "@factor/core": "^1.0.0",
     "@factor/plugin-sitemap": "^1.5.24",
+    "@factor/plugin-ssr-bar": "^1.5.26",
     "firebase": "4.6.2"
   },
   "devDependencies": {
@@ -44,6 +45,7 @@
       "description": "Hacker News clone built with Factor JS"
     },
     "admins": [],
+    "mode": "framework",
     "load": [
       "app",
       "server"

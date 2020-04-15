@@ -3,6 +3,9 @@ import LRU from "lru-cache"
 
 import { listTypesArray, DataApi, ApiArguments } from "./types"
 
+/**
+ * Create the NodeJS version of the Firebase API
+ */
 export const createAPI = async ({ config, version }: ApiArguments): Promise<DataApi> => {
   let api: DataApi
   // this piece of code may run multiple times in development mode,
