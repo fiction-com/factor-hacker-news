@@ -50,7 +50,8 @@ export default Vue.extend({
   },
   metaInfo() {
     return {
-      title: toLabel(this.view)
+      title: toLabel(this.view),
+      description: `A listing of the ${this.view} items from Hacker News (built with Factor)`
     }
   },
 
@@ -97,7 +98,7 @@ export default Vue.extend({
       this.loadItems(this.page)
     }
     // watch the current list for realtime updates
-    this.unwatchList = await watchList(this.view, async (ids) => {
+    this.unwatchList = await watchList(this.view, async ids => {
       setList({ type: this.view, ids })
       await ensureActiveItems()
       this.displayedItems = getActiveItems()
@@ -138,9 +139,9 @@ export default Vue.extend({
   border-radius: 2px;
 }
 
-.scrolled .news-list-nav{
-    box-shadow: 0 1px 3px rgba(40,40,40, .1);
-  }
+.scrolled .news-list-nav {
+  box-shadow: 0 1px 3px rgba(40, 40, 40, 0.1);
+}
 
 .news-list-nav {
   padding: 15px 30px;

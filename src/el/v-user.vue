@@ -48,8 +48,10 @@ export default Vue.extend({
   },
 
   metaInfo() {
+    const name = this.user ? this.user.id : "User not found"
     return {
-      title: this.user ? this.user.id : "User not found"
+      title: name,
+      description: `Profile for ${name}`
     }
   },
   methods: {
