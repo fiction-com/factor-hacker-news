@@ -1,14 +1,15 @@
 # factor-hacker-news
 
-HackerNews clone built with Factor. Includes framework features(router, store,
-etc) and demonstrates server rendering.
+HackerNews clone built with Factor. Includes framework features, SSR, routes, store.
 
 <p align="center">
   <a href="https://hacker-news-example.factor.dev" target="_blank">
-    <img src="./screenshot-tall.jpg" width="400px" style="box-shadow: 0 2px 3px rgba(0,0,0,.1)">
-    <br>
-    Live Demo
+    <img src="./screenshot-tall.jpg" width="350px" style="border: 2px solid #ff0;">
   </a>
+</p>
+
+<p align="center">
+<a href="https://hacker-news-example.factor.dev" target="_blank"><strong>Live Demo &rarr;</strong></a>
 </p>
 
 ## Features
