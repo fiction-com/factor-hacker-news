@@ -171,16 +171,24 @@ html.factor-app {
   @media (max-width: 600px) {
     .header {
       .inner {
-        padding: 15px;
+        padding: 8px;
       }
 
       a {
-        margin-right: 1em;
+        margin-right: 0.25rem;
+        padding: 0.1rem 0.5rem;
       }
 
       .github {
         display: none;
       }
+    }
+    .news-view {
+      padding-top: 0;
+    }
+    .news-list-nav {
+      top: 0;
+      position: relative;
     }
   }
 }
