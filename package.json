@@ -10,7 +10,8 @@
     "build": "npx factor build",
     "lint": "npm run eslint && npm run types",
     "types": "tsc --skipLibCheck",
-    "eslint": "eslint --ext .ts,.js,.vue,.json ."
+    "eslint": "eslint --ext .ts,.js,.vue,.json .",
+    "heroku-postbuild": "npm run build"
   },
   "dependencies": {
     "@factor/core": "^1.0.0",
