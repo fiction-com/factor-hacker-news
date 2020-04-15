@@ -50,6 +50,13 @@ export default {
   position: relative;
   line-height: 20px;
 
+  .title a {
+    font-weight: 600;
+    &:hover {
+      color: var(--color-primary);
+    }
+  }
+
   .score {
     color: #ff6600;
     font-size: 1.1em;

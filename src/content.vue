@@ -29,6 +29,14 @@
         <div class="alt">
           <a
             class="github"
+            href="https://github.com/fiction-com/factor-hacker-news"
+            target="_blank"
+            rel="noopener"
+          >
+            <factor-icon icon="fab fa-github" />
+          </a>
+          <a
+            class="github"
             href="https://factor.dev"
             target="_blank"
             rel="noopener"
@@ -43,11 +51,14 @@
 </template>
 <script >
 import Vue from "vue"
+import { factorIcon } from "@factor/ui"
 
 export default Vue.extend({
+  components: { factorIcon },
   metaInfo() {
     return {
-      titleTemplate: "Factor HN | %s"
+      titleTemplate: "%s | Factor Hacker News",
+      image: require("./favicon.png")
     }
   }
 })
@@ -78,7 +89,6 @@ html.factor-app {
     color: #34495e;
     text-decoration: none;
   }
-
 
   .header {
     background-color: var(--color-primary);
