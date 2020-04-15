@@ -1,16 +1,20 @@
 module.exports = {
   root: true,
+
   globals: {
     __dirname: false,
     require: false,
     module: false,
     process: false
   },
+
   parser: "vue-eslint-parser",
+
   parserOptions: {
     sourceType: "module",
     parser: "@typescript-eslint/parser"
   },
+
   env: {
     browser: true,
     es6: true,
@@ -30,22 +34,28 @@ module.exports = {
   plugins: ["vue", "json", "prettier", "unicorn", "import", "@typescript-eslint"],
 
   rules: {
+    // Style
     "no-console": "error",
     "no-debugger": "error",
     semi: ["error", "never"],
-    "func-style": ["warn", "expression"],
-    "@typescript-eslint/no-empty-function": "off",
+    // Prevent circular dependencies in modules
     "import/no-cycle": 2,
+    // Always require file extensions except for js/ts files
     "import/extensions": ["warn", "always", { ts: "never", js: "never" }],
+    // Better for unit testing
+    "func-style": ["warn", "expression"],
+    // TypeScript
+    "@typescript-eslint/no-empty-function": "off",
+    "@typescript-eslint/explicit-function-return-type": "off", // overridden for .ts files
+    "@typescript-eslint/no-use-before-define": "warn", // can cause organization issues
+    "@typescript-eslint/no-var-requires": "off", // overridden for .ts files
+    "@typescript-eslint/no-explicit-any": "off",
+    // Vue
+    "vue/max-attributes-per-line": [2, { singleline: 20, multiline: {} }],
     "vue/html-closing-bracket-spacing": "off",
     "vue/multiline-html-element-content-newline": "off",
     "vue/singleline-html-element-content-newline": "off",
-    "vue/max-attributes-per-line": [2, { singleline: 20, multiline: {} }],
-    "@typescript-eslint/explicit-function-return-type": "off", // overridden for .ts files
-    "@typescript-eslint/no-use-before-define": "warn", // can cause organization issues
-    "func-style": ["warn", "expression"],
-    "@typescript-eslint/no-var-requires": "off", // overridden for .ts files
-    "@typescript-eslint/no-explicit-any": "off",
+    // Add Vue rules to fix conflicts with prettier/eslint
     "vue/html-self-closing": [
       "error",
       {
@@ -59,6 +69,7 @@ module.exports = {
       }
     ]
   },
+
   overrides: [
     {
       // enable the rule specifically for TypeScript files
@@ -68,6 +79,7 @@ module.exports = {
       }
     }
   ],
+
   settings: {
     "import/ignore": ["firebase", "create-api"]
   }

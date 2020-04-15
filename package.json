@@ -45,8 +45,7 @@
       "name": "Factor Hacker News",
       "description": "Hacker News clone built with Factor JS"
     },
-    "admins": [],
-    "mode": "framework",
+    "scope": "framework",
     "load": [
       "app",
       "server"

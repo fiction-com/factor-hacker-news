@@ -83,5 +83,13 @@ export default {
       }
     }
   }
+  .label {
+    border-radius: 3px;
+    text-transform: capitalize;
+    padding: 1px 5px;
+    font-size: 0.8em;
+    color: #fff;
+    background: var(--color-primary);
+  }
 }
 </style>
