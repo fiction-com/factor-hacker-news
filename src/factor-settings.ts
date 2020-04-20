@@ -7,6 +7,6 @@ export default {
       content: (): Promise<any> => import("./content.vue")
     },
     icon: require("./icon.svg"),
-    faviconPath: `${__dirname}/favicon.png` // nee
+    faviconPath: `${__dirname}/favicon.png`
   }
 }
